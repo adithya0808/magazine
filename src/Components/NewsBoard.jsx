@@ -3,10 +3,26 @@ import NewsItems from './NewsItems';
 
 const NewsBoard = ({category}) => {
     const [articles,setArticles]=useState([]);
-    useEffect(()=>{
-        let url=`https://newsapi.org/v2/top-headlines?country=in&category=${category}&apiKey=${import.meta.env.VITE_API_KEY}`
-        fetch(url).then(response=>response.json()).then(data=>setArticles(data.articles));
-    },[category])
+   useEffect(() => {
+        const fetchNews = async () => {
+            try {
+                let url = `https://newsapi.org/v2/top-headlines?country=in&category=${category}&apiKey=a562a88e8c904d4a94319b5e7ce46397`;
+
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                setArticles(data.articles);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchNews();
+    }, [category]);
   return (
     <div className='text-center'>
         <h2>Latest <span className='badge bg-danger'>News</span></h2>
